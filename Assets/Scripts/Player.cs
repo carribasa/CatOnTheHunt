@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool isWalking = false;
     public float jumpForce;
     private bool isGrounded = true;
+    public GameObject dialoguePanel;
 
     private void Start()
     {
@@ -29,25 +30,29 @@ public class Player : MonoBehaviour
 
     private void MovePlayer()
     {
-        inputValue = Input.GetAxisRaw("Horizontal");
-
-        switch (inputValue)
+        if (dialoguePanel == null || !dialoguePanel.activeSelf)
         {
-            case -1:
-                direction = Vector2.left;
-                FlipSprite(true);
-                break;
-            case 0:
-                direction = Vector2.zero;
-                break;
-            case 1:
-                direction = Vector2.right;
-                FlipSprite(false);
-                break;
-        }
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
+            inputValue = Input.GetAxisRaw("Horizontal");
 
-        isWalking = Mathf.Abs(inputValue) > 0.1f;
+            switch (inputValue)
+            {
+                case -1:
+                    direction = Vector2.left;
+                    FlipSprite(true);
+                    break;
+                case 0:
+                    direction = Vector2.zero;
+                    break;
+                case 1:
+                    direction = Vector2.right;
+                    FlipSprite(false);
+                    break;
+            }
+
+            float targetXPosition = Mathf.Max(transform.position.x + direction.x * moveSpeed * Time.deltaTime, -10.55f);
+            transform.position = new Vector2(targetXPosition, transform.position.y);
+            isWalking = Mathf.Abs(inputValue) > 0.1f;
+        }
     }
 
 
