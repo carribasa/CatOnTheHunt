@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float jumpForce;
     private bool isGrounded = true;
     public GameObject dialoguePanel;
+    public float maxSpeed;
 
     private void Start()
     {
@@ -30,28 +31,29 @@ public class Player : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (dialoguePanel == null || !dialoguePanel.activeSelf)
+        if (!DialogueOnScreen())
         {
             inputValue = Input.GetAxisRaw("Horizontal");
 
-            switch (inputValue)
+            if (Mathf.Abs(rb.velocity.x) < maxSpeed)
             {
-                case -1:
-                    direction = Vector2.left;
-                    FlipSprite(true);
-                    break;
-                case 0:
-                    direction = Vector2.zero;
-                    break;
-                case 1:
-                    direction = Vector2.right;
-                    FlipSprite(false);
-                    break;
+                switch (inputValue)
+                {
+                    case -1:
+                        rb.AddForce(Vector2.left * moveSpeed);
+                        FlipSprite(true);
+                        break;
+                    case 0:
+                        break;
+                    case 1:
+                        rb.AddForce(Vector2.right * moveSpeed);
+                        FlipSprite(false);
+                        break;
+                }
             }
-
-            float targetXPosition = Mathf.Max(transform.position.x + direction.x * moveSpeed * Time.deltaTime, -10.55f);
-            transform.position = new Vector2(targetXPosition, transform.position.y);
             isWalking = Mathf.Abs(inputValue) > 0.1f;
+            float clampedX = Mathf.Max(rb.position.x, -10.55f);
+            rb.position = new Vector2(clampedX, rb.position.y);
         }
     }
 
@@ -77,7 +79,22 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        isGrounded = false;
+        if (!DialogueOnScreen())
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isGrounded = false;
+        }
+    }
+
+    private bool DialogueOnScreen()
+    {
+        if (dialoguePanel == null || !dialoguePanel.activeSelf)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
