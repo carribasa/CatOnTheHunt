@@ -11,7 +11,7 @@ public class Dialogue : MonoBehaviour
     int index;
     private CinemachineBrain cinemachineBrain;
     public Camera mainCamera;
-    public float zoomedOrthoSize = 4.3f;
+    public float zoomedOrthoSize = 5f;
     private float originalOrthoSize;
     public float zoomDuration = 2f;
     private bool cameraMoving = false;
