@@ -2,19 +2,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed = 2.5f;
-    private float inputValue;
+
     private Rigidbody2D rb;
-    private Vector2 direction;
     private Animator animator;
-    public float jumpForce = 6f;
     public GameObject dialoguePanel;
-    public float maxSpeed;
 
     // Movement
     private Vector2 movement;
+    public float speed;
+    public float jumpForce;
     private bool facingRight = true;
-    private bool isGrounded = true;
+    private bool isGrounded;
 
     private void Start()
     {
@@ -24,11 +22,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        MovePlayer();
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            Jump();
-        }
+       
     }
 
     void LateUpdate()
@@ -38,9 +32,12 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-            float horizontalVelocity = movement.normalized.x * moveSpeed;
-            rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
+        MovePlayer();
+        Jump();
+        float horizontalVelocity = movement.normalized.x * speed * Time.deltaTime;
+        rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
     }
+
 
     private void MovePlayer()
     {
@@ -49,7 +46,6 @@ public class Player : MonoBehaviour
             float horizontalInput = Input.GetAxisRaw("Horizontal");
             movement = new Vector2(horizontalInput, 0f);
 
-            // Flip character
             if (horizontalInput < 0f && facingRight == true)
             {
                 Flip();
@@ -70,33 +66,31 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
             animator.SetBool("isJumping", false);
+            animator.SetBool("Idle", true);
         }
     }
 
+    // Jump
     private void Jump()
     {
         if (!DialogueOnScreen())
         {
-            if (Input.GetButtonDown("Jump") && isGrounded == true)
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
-                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                isGrounded = false;
                 animator.SetBool("isJumping", true);
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
         }
     }
 
+    // Is Dialogue on Screen?
     private bool DialogueOnScreen()
     {
-        if (dialoguePanel == null || !dialoguePanel.activeSelf)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return dialoguePanel != null && dialoguePanel.activeSelf;
     }
 
+    // Flip character
     private void Flip()
     {
         facingRight = !facingRight;
