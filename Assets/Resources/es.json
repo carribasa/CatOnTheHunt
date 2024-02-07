@@ -3,5 +3,15 @@
         {"key": "label.scene_01", "value": "Mi primera pantalla"},
         {"key": "label.scene_02", "value": "Mi segunda pantalla"},
         {"key": "label.scene_03", "value": "Mi tercera pantalla"}
+    ],
+    "dialogs": [
+        {
+            "key": "dialog_01", 
+            "value": [
+                "asdasd",
+                "123123",
+                "awqw"
+            ]
+        }
     ]
 }
