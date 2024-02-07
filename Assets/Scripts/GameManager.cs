@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameManagerSingleton : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     /*
-     * Variable privada que contendrá la instancia del Game Manager (static)
+     * Variable privada que contendrï¿½ la instancia del Game Manager (static)
      * */
-    private static GameManagerSingleton instance;
+    private static GameManager instance;
 
     /*
-     * Variable pública que devolverá el contenido de instacia, si existe o 
-     * creará el Game Manager -> SetupInstance
+     * Variable pï¿½blica que devolverï¿½ el contenido de instacia, si existe o 
+     * crearï¿½ el Game Manager -> SetupInstance
      * */
-    public static GameManagerSingleton Instance
+    public static GameManager Instance
     {
         get
         {
@@ -27,35 +27,35 @@ public class GameManagerSingleton : MonoBehaviour
     }
 
     /// <summary>
-    /// Método para inciar el Game Manager
+    /// Mï¿½todo para inciar el Game Manager
     /// </summary>
     private static void SetupInstance()
     {
         /*
-         * Nos aseguramos, por precaución, que el objeto no existe, de este modo tenemos claro que unicamente
+         * Nos aseguramos, por precauciï¿½n, que el objeto no existe, de este modo tenemos claro que unicamente
          * va a haber un GameManagerSinglenton en nuestra escena.
          * */
-        instance = FindObjectOfType<GameManagerSingleton>();
+        instance = FindObjectOfType<GameManager>();
         if (instance == null)
         {
             /*
-             * Creamos un objeto en la escena y añadimos el propio componente GameManagerSingleton, de este modo 
+             * Creamos un objeto en la escena y aï¿½adimos el propio componente GameManagerSingleton, de este modo 
              * tenemos acceso a todas las herramientas de MonoBehaviour
              * */
             GameObject gameObj = new GameObject();
             gameObj.name = "GameManagerSingleton";
-            instance = gameObj.AddComponent<GameManagerSingleton>();
+            instance = gameObj.AddComponent<GameManager>();
 
             /*
-             * Marcamos el objeto para que no se destruya a lo largo de la aplicación
+             * Marcamos el objeto para que no se destruya a lo largo de la aplicaciï¿½n
              * */
             DontDestroyOnLoad(gameObj);
         }
     }
 
     /*
-     * Variable pública con el contador de vidas, podremos acceder a ella desde cualquier
-     * sitio de la aplicación mediante:
+     * Variable pï¿½blica con el contador de vidas, podremos acceder a ella desde cualquier
+     * sitio de la aplicaciï¿½n mediante:
      * 
      * GameManagerSingleton.Instace.Vidas
      * */

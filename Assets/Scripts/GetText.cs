@@ -11,7 +11,7 @@ public class GetText : MonoBehaviour
 
     private void Awake()
     {
-        TextItem myText = GameManagerSingleton.Instance.GetText(this.key);
+        TextItem myText = GameManager.Instance.GetText(this.key);
 
         if (myText != null)
         {

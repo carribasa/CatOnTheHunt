@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpForce;
     private bool facingRight = true;
+    [SerializeField]
     private bool isGrounded;
 
     private void Start()
@@ -22,18 +23,19 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-       
+
     }
 
     void LateUpdate()
     {
-        animator.SetBool("Idle", movement == Vector2.zero);
+        //animator.SetBool("Idle", movement == Vector2.zero);
     }
 
     void FixedUpdate()
     {
         MovePlayer();
         Jump();
+        Fall();
         float horizontalVelocity = movement.normalized.x * speed * Time.deltaTime;
         rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
     }
@@ -45,7 +47,12 @@ public class Player : MonoBehaviour
         {
             float horizontalInput = Input.GetAxisRaw("Horizontal");
             movement = new Vector2(horizontalInput, 0f);
-
+            animator.SetBool("Idle", false);
+            if (isGrounded)
+            {
+                animator.SetBool("Walking", true);
+                 animator.SetBool("Falling", false);
+            }
             if (horizontalInput < 0f && facingRight == true)
             {
                 Flip();
@@ -53,6 +60,11 @@ public class Player : MonoBehaviour
             else if (horizontalInput > 0f && facingRight == false)
             {
                 Flip();
+            }
+            else if (horizontalInput == 0f && isGrounded)
+            {
+                animator.SetBool("Walking", false);
+                animator.SetBool("Idle", true);
             }
 
             float clampedX = Mathf.Max(rb.position.x, -10.55f);
@@ -65,8 +77,16 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            animator.SetBool("isJumping", false);
-            animator.SetBool("Idle", true);
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Falling", false);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 
@@ -78,9 +98,27 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 isGrounded = false;
-                animator.SetBool("isJumping", true);
+                animator.SetBool("Walking", false);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                animator.SetBool("Idle", false);
+                animator.SetBool("Jumping", true);
             }
+        }
+    }
+
+    //Fall
+    void Fall()
+    {
+        // Verifica si el personaje esta cayendo
+        if (rb.velocity.y < 0 && !isGrounded)
+        {
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Walking", false);
+            animator.SetBool("Falling", true);
+        }
+        else
+        {
+            animator.SetBool("Falling", false);
         }
     }
 
