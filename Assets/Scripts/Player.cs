@@ -12,23 +12,12 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpForce;
     private bool facingRight = true;
-    [SerializeField]
-    private bool isGrounded;
+    [SerializeField] bool isGrounded;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-    }
-
-    void Update()
-    {
-
-    }
-
-    void LateUpdate()
-    {
-        //animator.SetBool("Idle", movement == Vector2.zero);
     }
 
     void FixedUpdate()
@@ -40,6 +29,8 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
     }
 
+    // MOVEMENT & ANIMATIONS -------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------
 
     private void MovePlayer()
     {
@@ -51,7 +42,7 @@ public class Player : MonoBehaviour
             if (isGrounded)
             {
                 animator.SetBool("Walking", true);
-                 animator.SetBool("Falling", false);
+                animator.SetBool("Falling", false);
             }
             if (horizontalInput < 0f && facingRight == true)
             {
@@ -69,24 +60,6 @@ public class Player : MonoBehaviour
 
             float clampedX = Mathf.Max(rb.position.x, -10.55f);
             rb.position = new Vector2(clampedX, rb.position.y);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-            animator.SetBool("Jumping", false);
-            animator.SetBool("Falling", false);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
         }
     }
 
@@ -122,7 +95,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Is Dialogue on Screen?
+    // Is Dialogue on Screen? -> Para para movimiento cuando haya dialogo
     private bool DialogueOnScreen()
     {
         return dialoguePanel != null && dialoguePanel.activeSelf;
@@ -135,5 +108,33 @@ public class Player : MonoBehaviour
         float localScaleX = transform.localScale.x;
         localScaleX = localScaleX * -1f;
         transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
+    }
+
+    // COLLISIONS -------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            foreach (ContactPoint2D point in collision.contacts)
+            {
+                if (point.normal.y >= 0.5f)
+                {
+                    isGrounded = true;
+                    animator.SetBool("Jumping", false);
+                    animator.SetBool("Falling", false);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
     }
 }
