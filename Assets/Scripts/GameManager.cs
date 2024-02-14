@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
-    public int Vidas = 3;
+    public int Lives = 3;
     public UnityEvent OnHurt = new UnityEvent();
     public UnityEvent OnHeal = new UnityEvent();
     public UnityEvent OnPlay = new UnityEvent();
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Iniciar GAME MANAGE
+    // Iniciar GAME MANAGER
     private static void SetupInstance()
     {
         instance = FindObjectOfType<GameManager>();

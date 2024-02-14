@@ -128,6 +128,11 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            GameManager.Instance.Lives--;
+            GameManager.Instance.OnHurt.Invoke();
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
