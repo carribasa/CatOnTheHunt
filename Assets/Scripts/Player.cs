@@ -130,8 +130,11 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            GameManager.Instance.Lives--;
-            GameManager.Instance.OnHurt.Invoke();
+            if (GameManager.Instance.Lives >= 0)
+            {
+                GameManager.Instance.Lives--;
+                GameManager.Instance.OnHurt?.Invoke();
+            }
         }
     }
 

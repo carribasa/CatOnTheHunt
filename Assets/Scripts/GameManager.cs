@@ -29,11 +29,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-
-    }
-
     // Iniciar GAME MANAGER
     private static void SetupInstance()
     {
