@@ -21,29 +21,30 @@ public class EnemyPatrol : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaitAndChangeDirection());
+        _animator.SetBool("Walking", true);
     }
 
     private IEnumerator WaitAndChangeDirection()
-{
-    while (true) // Bucle infinito para el movimiento continuo
     {
-        // Mueve al enemigo en la dirección actual
-        float horizontalVelocity = (_facingRight ? 1 : -1) * speed;
-        _rigidbody.velocity = new Vector2(horizontalVelocity, _rigidbody.velocity.y);
-
-        // Lanza un raycast hacia abajo para detectar el suelo
-        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, rayLength);
-        if (!groundInfo.collider) // Si no detecta suelo
+        while (true)
         {
-            _rigidbody.velocity = Vector2.zero; // Detiene el movimiento del enemigo
-            yield return new WaitForSeconds(3); // Espera 3 segundos
+            float horizontalVelocity = (_facingRight ? 1 : -1) * speed;
+            _rigidbody.velocity = new Vector2(horizontalVelocity, _rigidbody.velocity.y);
 
-            Flip(); // Cambia de dirección después de esperar
+            RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, rayLength);
+            if (!groundInfo.collider)
+            {
+                _rigidbody.velocity = Vector2.zero;
+                _animator.SetBool("Walking", false);
+                yield return new WaitForSeconds(3); // Espera 3 segundos
+
+                Flip(); // Cambia de dirección después de esperar
+                _animator.SetBool("Walking", true);
+            }
+
+            yield return null;
         }
-        
-        yield return null;
     }
-}
 
 
     private void OnTriggerEnter2D(Collider2D collision)
