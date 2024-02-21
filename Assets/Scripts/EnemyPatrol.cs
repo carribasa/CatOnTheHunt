@@ -36,9 +36,9 @@ public class EnemyPatrol : MonoBehaviour
             {
                 _rigidbody.velocity = Vector2.zero;
                 _animator.SetBool("Walking", false);
-                yield return new WaitForSeconds(3); // Espera 3 segundos
+                yield return new WaitForSeconds(2);
 
-                Flip(); // Cambia de dirección después de esperar
+                Flip();
                 _animator.SetBool("Walking", true);
             }
 

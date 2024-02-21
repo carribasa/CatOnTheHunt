@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public float jumpForce;
     private bool facingRight = true;
     [SerializeField] bool isGrounded;
+    [SerializeField] Transform checkGroundedLeft, checkGroundedRight;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
         MovePlayer();
         Jump();
         Fall();
+        // CheckGrounded();
         float horizontalVelocity = movement.normalized.x * speed * Time.deltaTime;
         rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
     }
@@ -132,6 +134,7 @@ public class Player : MonoBehaviour
         {
             if (GameManager.Instance.Lives >= 0)
             {
+                Hurt(collision);
                 GameManager.Instance.Lives--;
                 GameManager.Instance.OnHurt?.Invoke();
             }
@@ -144,5 +147,19 @@ public class Player : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    private void Hurt(Collision2D collision)
+    {
+        animator.SetTrigger("Hurt");
+
+        rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+    }
+
+    private void CheckGrounded()
+    {
+        RaycastHit2D hitLeft = Physics2D.Raycast(checkGroundedLeft.position, Vector2.down, 0.2f);
+        RaycastHit2D hitRight = Physics2D.Raycast(checkGroundedRight.position, Vector2.down, 0.2f);
+        isGrounded = hitLeft.collider && hitRight.collider;
     }
 }
