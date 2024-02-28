@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     public GameObject dialoguePanel;
+    public int lives;
 
     // Movement
     private Vector2 movement;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        lives = GameManager.Instance.Lives;
         MovePlayer();
         Jump();
         Fall();
@@ -132,13 +134,30 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            if (GameManager.Instance.Lives >= 0)
+
+            Hurt(collision);
+            GameManager.Instance.Lives--;
+            GameManager.Instance.OnHurt?.Invoke();
+            if (GameManager.Instance.Lives <= 0)
             {
-                Hurt(collision);
-                GameManager.Instance.Lives--;
-                GameManager.Instance.OnHurt?.Invoke();
+                animator.SetTrigger("Die");
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Life"))
+        {
+            GameManager.Instance.Lives++;
+            GameManager.Instance.OnHeal?.Invoke();
+        }
+        if (collider.gameObject.CompareTag("Points"))
+        {
+            GameManager.Instance.Points++;
+            GameManager.Instance.OnHitPoint?.Invoke();
+        }
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -152,7 +171,6 @@ public class Player : MonoBehaviour
     private void Hurt(Collision2D collision)
     {
         animator.SetTrigger("Hurt");
-
         rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
     }
 

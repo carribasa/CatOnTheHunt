@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5785094281950015664}
   m_Layer: 0
   m_Name: HeartGrabbable
-  m_TagString: Untagged
+  m_TagString: Life
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

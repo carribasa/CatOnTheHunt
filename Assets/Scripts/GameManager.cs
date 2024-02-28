@@ -8,8 +8,10 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public int Lives = 3;
+    public int Points = 0;
     public UnityEvent OnHurt = new UnityEvent();
     public UnityEvent OnHeal = new UnityEvent();
+    public UnityEvent OnHitPoint = new UnityEvent();
     public UnityEvent OnPlay = new UnityEvent();
     public UnityEvent OnPause = new UnityEvent();
 
