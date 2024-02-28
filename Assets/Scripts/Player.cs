@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
                 animator.SetBool("Walking", false);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 animator.SetBool("Idle", false);
-                animator.SetBool("Jumping", true);
+                animator.SetTrigger("Jump");
             }
         }
     }
@@ -89,7 +89,6 @@ public class Player : MonoBehaviour
         // Verifica si el personaje esta cayendo
         if (rb.velocity.y < 0 && !isGrounded)
         {
-            animator.SetBool("Jumping", false);
             animator.SetBool("Walking", false);
             animator.SetBool("Falling", true);
         }
@@ -126,7 +125,6 @@ public class Player : MonoBehaviour
                 if (point.normal.y >= 0.5f)
                 {
                     isGrounded = true;
-                    animator.SetBool("Jumping", false);
                     animator.SetBool("Falling", false);
                     break;
                 }
@@ -141,6 +139,7 @@ public class Player : MonoBehaviour
             if (GameManager.Instance.Lives <= 0)
             {
                 animator.SetTrigger("Die");
+                Destroy(gameObject, 0.8f);
             }
         }
     }
