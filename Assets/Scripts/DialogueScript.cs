@@ -16,6 +16,7 @@ public class Dialogue : MonoBehaviour
     public float zoomDuration = 2f;
     private bool cameraMoving = false;
     private Vector3 originalCameraPosition;
+    public GameObject HUDMenu;
 
     void Start()
     {
@@ -23,6 +24,7 @@ public class Dialogue : MonoBehaviour
         cinemachineBrain = mainCamera.GetComponent<CinemachineBrain>();
         originalCameraPosition = mainCamera.transform.position;
         originalOrthoSize = mainCamera.orthographicSize;
+        HUDMenu.SetActive(false);
         StartDialogue();
     }
 
@@ -110,6 +112,7 @@ public class Dialogue : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);
+        HUDMenu.SetActive(true);
     }
 }
 
