@@ -104,6 +104,7 @@ MonoBehaviour:
   speed: 2
   groundDetection: {fileID: 2916999750375227812}
   rayLength: 2
+  sonidoGolpe: {fileID: 8300000, guid: 6ea5dc0125efc544abe3ae6fe62edf9c, type: 3}
 --- !u!50 &3127974733176774591
 Rigidbody2D:
   serializedVersion: 4

@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Life
   - Points
+  - GroundDeath
+  - LevelCompleted
   layers:
   - Default
   - TransparentFX

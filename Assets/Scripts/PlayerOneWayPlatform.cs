@@ -11,7 +11,10 @@ public class PlayerOneWayPlatform : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            StartCoroutine(DisableCollision());
+            if (currentOneWayPlatform != null)
+            {
+                StartCoroutine(DisableCollision());
+            }
         }
     }
 

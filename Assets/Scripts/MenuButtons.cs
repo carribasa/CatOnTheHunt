@@ -9,14 +9,14 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] List<Button> buttons;
     int index;
 
-    void Update()
-    {
-
-    }
-
     public void StartNewGame()
     {
         SceneManager.LoadScene("Level1");
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
     public void ExitApplication()

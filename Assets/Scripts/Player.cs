@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     private Rigidbody2D rb;
     private Animator animator;
     public GameObject dialoguePanel;
@@ -16,10 +15,27 @@ public class Player : MonoBehaviour
     [SerializeField] bool isGrounded;
     [SerializeField] Transform checkGroundedLeft, checkGroundedRight;
 
+    // Audio
+    public AudioClip sonidoPasos;
+    public AudioClip sonidoMuerte;
+    private AudioSource audioSource;
+
+    public GameObject menuGameOver;
+    public GameObject menuNivelCompletado;
+    public GameObject menuHUD;
+
+    private void Awake()
+    {
+        GameManager.Instance.Lives = 3;
+        GameManager.Instance.Points = 0;
+    }
+
     private void Start()
     {
+        menuGameOver.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -47,6 +63,11 @@ public class Player : MonoBehaviour
             {
                 animator.SetBool("Walking", true);
                 animator.SetBool("Falling", false);
+                if (!audioSource.isPlaying)
+                {
+                    audioSource.clip = sonidoPasos;
+                    audioSource.Play();
+                }
             }
             if (horizontalInput < 0f && facingRight == true)
             {
@@ -60,6 +81,7 @@ public class Player : MonoBehaviour
             {
                 animator.SetBool("Walking", false);
                 animator.SetBool("Idle", true);
+                audioSource.Stop();
             }
 
             float clampedX = Mathf.Max(rb.position.x, -10.55f);
@@ -75,6 +97,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 isGrounded = false;
+                audioSource.Stop();
                 animator.SetBool("Walking", false);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 animator.SetBool("Idle", false);
@@ -132,14 +155,17 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Enemy"))
         {
-
             Hurt(collision);
             GameManager.Instance.Lives--;
             GameManager.Instance.OnHurt?.Invoke();
             if (GameManager.Instance.Lives <= 0)
             {
+                audioSource.clip = sonidoMuerte;
+                audioSource.Play();
                 animator.SetTrigger("Die");
                 Destroy(gameObject, 0.8f);
+                menuHUD.SetActive(false);
+                menuGameOver.SetActive(true);
             }
         }
     }
@@ -156,7 +182,17 @@ public class Player : MonoBehaviour
             GameManager.Instance.Points++;
             GameManager.Instance.OnHitPoint?.Invoke();
         }
-
+        if (collider.gameObject.CompareTag("GroundDeath"))
+        {
+            menuHUD.SetActive(false);
+            menuGameOver.SetActive(true);
+            audioSource.Stop();
+        }
+        if (collider.gameObject.CompareTag("LevelCompleted"))
+        {
+            menuHUD.SetActive(false);
+            menuNivelCompletado.SetActive(true);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
