@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.Lives = 3;
+        lives = GameManager.Instance.Lives;
         GameManager.Instance.Points = 0;
     }
 
@@ -38,11 +38,15 @@ public class Player : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        Jump();
+    }
+
     void FixedUpdate()
     {
         lives = GameManager.Instance.Lives;
         MovePlayer();
-        Jump();
         Fall();
         // CheckGrounded();
         float horizontalVelocity = movement.normalized.x * speed * Time.deltaTime;
@@ -156,7 +160,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Hurt(collision);
-            GameManager.Instance.Lives--;
+            lives--;
             GameManager.Instance.OnHurt?.Invoke();
             if (GameManager.Instance.Lives <= 0)
             {
@@ -174,7 +178,7 @@ public class Player : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Life"))
         {
-            GameManager.Instance.Lives++;
+            lives++;
             GameManager.Instance.OnHeal?.Invoke();
         }
         if (collider.gameObject.CompareTag("Points"))
@@ -187,6 +191,7 @@ public class Player : MonoBehaviour
             menuHUD.SetActive(false);
             menuGameOver.SetActive(true);
             audioSource.Stop();
+            GameManager.Instance.NumDeaths++;
         }
         if (collider.gameObject.CompareTag("LevelCompleted"))
         {

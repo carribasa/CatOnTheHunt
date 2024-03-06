@@ -11,6 +11,7 @@ public class HUD : MonoBehaviour
     [SerializeField] RectTransform health;
     [SerializeField] TMP_Text pointsHUD;
     int lives;
+    [SerializeField] Player player;
     float healthWidth = 48f;
 
     void Start()
@@ -22,19 +23,17 @@ public class HUD : MonoBehaviour
         GameManager.Instance.OnHitPoint.AddListener(AddPoint);
         health.sizeDelta = new Vector2(healthWidth * lives, health.sizeDelta.y);
         pointsHUD.text = GameManager.Instance.Points.ToString();
-
     }
 
     public void LoseHealth()
     {
-        int lives = GameManager.Instance.Lives;
-        health.sizeDelta = new Vector2(healthWidth * lives, health.sizeDelta.y);
+        health.sizeDelta = new Vector2(healthWidth * player.lives, health.sizeDelta.y);
     }
 
     public void RecoverLife()
     {
         int lives = GameManager.Instance.Lives;
-        health.sizeDelta = new Vector2(healthWidth * lives, health.sizeDelta.y);
+        health.sizeDelta = new Vector2(healthWidth * player.lives, health.sizeDelta.y);
     }
 
     public void AddPoint()

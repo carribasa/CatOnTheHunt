@@ -2615,7 +2615,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.6677825, y: 0.0936396, z: -10.790607}
+  m_LocalPosition: {x: -3.6677825, y: 0.09363769, z: -10.790607}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2866,6 +2866,7 @@ MonoBehaviour:
   heartImage: {fileID: 1219481997}
   health: {fileID: 1219481996}
   pointsHUD: {fileID: 670192317}
+  player: {fileID: 1645026174}
 --- !u!4 &548813573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6040685960613891577, guid: cf612c40570528947bc5c0d6ea2384cb, type: 3}
@@ -8640,7 +8641,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 924655597}
         m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
-        m_MethodName: StartNewGame
+        m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8881,6 +8882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: []
+  numDeaths: 0
 --- !u!4 &924655598
 Transform:
   m_ObjectHideFlags: 0
@@ -9312,7 +9314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -233.53015, y: 135.97998}
+  m_AnchoredPosition: {x: -233.5299, y: 135.97998}
   m_SizeDelta: {x: -158.54, y: -202.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &993969227
@@ -11849,7 +11851,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1605943518}
         m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
-        m_MethodName: StartNewGame
+        m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12142,6 +12144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: []
+  numDeaths: 0
 --- !u!1001 &1608093454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12404,8 +12407,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.006228977, y: -0.031}
-  m_Size: {x: 0.09753757, y: 0.23}
+  m_Offset: {x: 0.011958731, y: -0.034114685}
+  m_Size: {x: 0.14120643, y: 0.2406112}
   m_Direction: 0
 --- !u!114 &1645026176
 MonoBehaviour:

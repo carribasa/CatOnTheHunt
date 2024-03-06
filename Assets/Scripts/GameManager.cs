@@ -7,8 +7,10 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
-    public int Lives = 3;
+    public int Lives;
     public int Points = 0;
+    public int NumDeaths;
+    public bool hardMode;
     public UnityEvent OnHurt = new UnityEvent();
     public UnityEvent OnHeal = new UnityEvent();
     public UnityEvent OnHitPoint = new UnityEvent();
